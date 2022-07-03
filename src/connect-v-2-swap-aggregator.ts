@@ -1,66 +1,48 @@
-import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts"
+import { BigInt } from "@graphprotocol/graph-ts"
 import {
   ConnectV2SwapAggregator,
-  SwapCall
-} from "../generated/SwapAggregator/ConnectV2SwapAggregator"
-import { SwapAggregatorData, TransactionData } from "../generated/schema"
+  LogSwapAggregator
+} from "../generated/ConnectV2SwapAggregator/ConnectV2SwapAggregator"
+import { ExampleEntity } from "../generated/schema"
 
-export const ZERO = new BigInt(0);
+export function handleLogSwapAggregator(event: LogSwapAggregator): void {
+  // Entities can be loaded from the store using a string ID; this ID
+  // needs to be unique across all entities of the same type
+  let entity = ExampleEntity.load(event.transaction.from.toHex())
 
-export function handleSwap(call: SwapCall): void {
-  let id = call.transaction.hash.toHexString() + call.block.timestamp.toString();
-  let swapData = createOrLoadSwapData(id);
-  let transactionData = createOrLoadTransaction(id);
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (!entity) {
+    entity = new ExampleEntity(event.transaction.from.toHex())
 
-  transactionData.hash = call.transaction.hash;
-  transactionData.from = call.transaction.from;
-  transactionData.to = call.transaction.to;
-  transactionData.index = call.transaction.index;
-  transactionData.input = call.transaction.input;
-  transactionData.gasLimit = call.transaction.gasLimit;
-  transactionData.gasPrice = call.transaction.gasPrice;
-  transactionData.gasUsed = call.block.gasUsed;
-  transactionData.blockNumber = call.block.number;
-  transactionData.value = call.transaction.value;
-  transactionData.timestamp = call.block.timestamp;
-
-  swapData.connectors = call.inputs._connectors;
-  swapData.callData = call.inputs._datas;
-  swapData.eventName = call.outputs._eventName;
-  swapData.eventParams = call.outputs._eventParam;
-  swapData.transactionDetail = transactionData.id;
-
-  transactionData.save();
-  swapData.save();
-}
-
-export function createOrLoadSwapData(id: string): SwapAggregatorData {
-  let swapData = SwapAggregatorData.load(id);
-  if(swapData == null){
-    swapData = new SwapAggregatorData(id);
-    swapData.callData = [];
-    swapData.connectors = [];
-    swapData.eventName = "";
-    swapData.eventParams = new Bytes(0);
+    // Entity fields can be set using simple assignments
+    entity.count = BigInt.fromI32(0)
   }
-  return swapData;
-}
 
-export function createOrLoadTransaction(id: string): TransactionData {
-  let txn = TransactionData.load(id);
-  if(txn == null){
-    txn = new TransactionData(id);
-    txn.index = ZERO;
-    txn.from = new Address(0);
-    txn.to = new Address(0);
-    txn.input = new Bytes(0);
-    txn.blockNumber = ZERO;
-    txn.timestamp = ZERO;
-    txn.gasUsed = ZERO;
-    txn.gasLimit = ZERO;
-    txn.gasPrice = ZERO;
-    txn.value = ZERO;
-    txn.hash = new Bytes(0);
-  }
-  return txn;
+  // BigInt and BigDecimal math are supported
+  entity.count = entity.count + BigInt.fromI32(1)
+
+  // Entity fields can be set based on event parameters
+  entity.connectors = event.params.connectors
+  entity.connectorName = event.params.connectorName
+
+  // Entities can be written to the store with `.save()`
+  entity.save()
+
+  // Note: If a handler doesn't require existing field values, it is faster
+  // _not_ to load the entity from the store. Instead, create it fresh with
+  // `new Entity(...)`, set the fields that should be updated and save the
+  // entity back to the store. Fields that were not set or unset remain
+  // unchanged, allowing for partial updates to be applied.
+
+  // It is also possible to access smart contracts from mappings. For
+  // example, the contract that has emitted the event can be connected to
+  // with:
+  //
+  // let contract = Contract.bind(event.address)
+  //
+  // The following functions can then be called on this contract to access
+  // state variables and other data:
+  //
+  // - contract.name(...)
 }

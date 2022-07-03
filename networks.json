@@ -1,14 +1,7 @@
 {
   "mainnet": {
-    "SwapAggregator": {
-      "address": "0xe6aa2d277aAfBb9e19354F6f893737C3608ff995",
-      "startBlock": 14998000
-    }
-  },
-  "matic": {
-    "SwapAggregator": {
-      "address": "0x403e1559ef503C12CF2ec8E07dBC592Ff298EEc3",
-      "startBlock": 29593000
+    "undefined": {
+      "address": "0xe6aa2d277aAfBb9e19354F6f893737C3608ff995"
     }
   }
 }
