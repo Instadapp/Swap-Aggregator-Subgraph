@@ -9,7 +9,7 @@ Tracks all the calls made to the swap method and stores the data which includes:
 
 Support added for Mainnet and Matic
 - Mainnet: [Swap Aggregator Subgraph](https://thegraph.com/hosted-service/subgraph/richa-iitr/swap-aggregator-subgraph?selected=playground) 
-- Polygon: [Swap Aggregator Matic](https://thegraph.com/hosted-service/subgraph/richa-iitr/swap-aggregator-matic?selected=playground) 
+- Polygon: [Swap Aggregator Matic](https://thegraph.com/hosted-service/subgraph/richa-iitr/swap-aggregator-polygon?selected=playground) 
 
 ### Query
 
