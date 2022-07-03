@@ -1,0 +1,23 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: undefined
+    network: mainnet
+    source:
+      address: "0xe6aa2d277aAfBb9e19354F6f893737C3608ff995"
+      abi: ConnectV2SwapAggregator
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - LogSwapAggregator
+      abis:
+        - name: ConnectV2SwapAggregator
+          file: ./abis/ConnectV2SwapAggregator.json
+      eventHandlers:
+        - event: LogSwapAggregator(string[],string,string,bytes)
+          handler: handleLogSwapAggregator
+      file: ./src/connect-v-2-swap-aggregator.ts
