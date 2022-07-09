@@ -7,9 +7,9 @@ Tracks all the calls made to the swap method and stores the data which includes:
 - eventName: "LogSwapAggregator(string[],string,string,bytes)"  
 - eventParam: Encoded data including connectors array, connector name where swap took place, eventName and eventParams returned by the connector where swap occured.
 
-Support added for Mainnet and Matic
+Support added for Mainnet
 - Mainnet: [Swap Aggregator Subgraph](https://thegraph.com/hosted-service/subgraph/richa-iitr/swap-aggregator-subgraph?selected=playground) 
-- Polygon: [Swap Aggregator Matic](https://thegraph.com/hosted-service/subgraph/richa-iitr/swap-aggregator-polygon?selected=playground) 
+<!-- - Polygon: [Swap Aggregator Matic](https://thegraph.com/hosted-service/subgraph/richa-iitr/swap-aggregator-polygon?selected=playground)  -->
 
 ### Query
 
